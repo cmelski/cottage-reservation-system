@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cottage Reservation System</title>
+  <style>
+    :root {
+      --primary: #2c7a7b;
+      --secondary: #edf2f7;
+      --accent: #f6ad55;
+      --text: #2d3748;
+      --white: #ffffff;
+      --danger: #e53e3e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--secondary);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    h2 { margin-bottom: 1rem; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-weight: bold;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #cbd5e0;
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button:hover { opacity: 0.95; }
+
+    .availability-day {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .available { color: green; }
+    .booked { color: var(--danger); }
+
+    .price-box {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f7fafc;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🏡 Cabot Trail Serenity Stay</h1>
+    <p>Book your stay in minutes</p>
+  </header>
+
+  <section class="card" style="max-width:1100px; margin: 2rem auto 0; overflow:hidden;">
+    <h2>Cottage Gallery</h2>
+    <div data-testid="image-gallery" style="display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:1rem;">
+      <img src="../static/images/cottage-exterior.jpeg" alt="Cottage Exterior" style="width:100%; max-width:500px; height:300px; object-fit:cover; border-radius:12px; scroll-snap-align:start;" />
+        <img src="../static/images/living-room.jpeg" alt="Living Room" style="width:100%; max-width:500px; height:300px; object-fit:cover; border-radius:12px; scroll-snap-align:start;" />
+        <img src="../static/images/master.jpeg" alt="Master Bedroom" style="width:100%; max-width:500px; height:300px; object-fit:cover; border-radius:12px; scroll-snap-align:start;" />
+      <img src="../static/images/second-bedroom.jpeg" alt="Second Bedroom" style="width:100%; max-width:500px; height:300px; object-fit:cover; border-radius:12px; scroll-snap-align:start;" />
+    </div>
+  </section>
+
+  <section class="card" style="max-width:1100px; margin: 2rem auto 0;">
+    <h2>Guest Reviews</h2>
+    <div class="grid">
+      <div class="card" style="background:#f7fafc;">
+        <p>⭐⭐⭐⭐⭐</p>
+        <p>“Beautiful cottage and amazing access to the Cabot Trail and beautiful mountain views. We’ll definitely be back!”</p>
+        <small>- Sarah M.</small>
+      </div>
+      <div class="card" style="background:#f7fafc;">
+        <p>⭐⭐⭐⭐⭐</p>
+        <p>“Super clean, cozy, and easy booking. Perfect family getaway.”</p>
+        <small>- James T.</small>
+      </div>
+      <div class="card" style="background:#f7fafc;">
+        <p>⭐⭐⭐⭐</p>
+        <p>“Loved the quiet location. Highly recommend.”</p>
+        <small>- Priya K.</small>
+      </div>
+       <div class="card" style="background:#f7fafc;">
+        <p>⭐⭐⭐⭐</p>
+        <p>“Loved the quiet location. Highly recommend.”</p>
+        <small>- Priya K.</small>
+      </div>
+       <div class="card" style="background:#f7fafc;">
+        <p>⭐⭐⭐⭐</p>
+        <p>“Loved the quiet location. Highly recommend.”</p>
+        <small>- Priya K.</small>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <section class="card">
+      <h2>Reserve Your Stay</h2>
+      <form id="reservationForm">
+        <div class="grid">
+          <div>
+            <label for="name">Full Name</label>
+            <input data-testid="full-name" id="name" name="name" required />
+          </div>
+
+          <div>
+            <label for="email">Email</label>
+            <input data-testid="email" id="email" type="email" name="email" required />
+          </div>
+
+          <div>
+            <label for="checkin">Check-In</label>
+            <input data-testid="checkin-date" id="checkin" type="date" required />
+          </div>
+
+          <div>
+            <label for="checkout">Check-Out</label>
+            <input data-testid="checkout-date" type="date" id="checkout" required />
+          </div>
+
+          <div>
+            <label for="guests">Guests</label>
+            <select data-testid="number-of-guests" id="guests">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5+</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:1rem;">
+          <label for="notes">Special Requests</label>
+          <textarea data-testid="special-requests" id="notes" rows="4"></textarea>
+        </div>
+
+        <div class="price-box">
+          <strong>Estimated Price:</strong> <span id="price">$0</span>
+        </div>
+
+        <button data-testid="reserve-button" type="submit">Reserve Now</button>
+      </form>
+    </section>
+
+    <aside class="card">
+      <h2>Availability</h2>
+      <div id="availabilityList">
+        <div class="availability-day"><span>Jun 1 - Jun 3</span><span class="booked">Booked</span></div>
+        <div class="availability-day"><span>Jun 4 - Jun 10</span><span class="available">Available</span></div>
+        <div class="availability-day"><span>Jun 11 - Jun 14</span><span class="booked">Booked</span></div>
+        <div class="availability-day"><span>Jun 15 - Jun 30</span><span class="available">Available</span></div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const nightlyRate = 250;
+    const checkin = document.getElementById('checkin');
+    const checkout = document.getElementById('checkout');
+    const price = document.getElementById('price');
+
+    function updatePrice() {
+      if (checkin.value && checkout.value) {
+        const start = new Date(checkin.value);
+        const end = new Date(checkout.value);
+        const diff = (end - start) / (1000 * 60 * 60 * 24);
+        if (diff > 0) {
+          price.textContent = `$${diff * nightlyRate}`;
+        } else {
+          price.textContent = '$0';
+        }
+      }
+    }
+
+    checkin.addEventListener('change', updatePrice);
+    checkout.addEventListener('change', updatePrice);
+
+    document.getElementById('reservationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Reservation submitted! Hook this to your backend API.');
+    });
+  </script>
+</body>
+</html>
