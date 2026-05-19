@@ -3,6 +3,7 @@ import logging
 logger = logging.getLogger(__name__)
 import pytest
 import os
+import time
 
 # load env file variables
 from dotenv import load_dotenv
@@ -59,6 +60,10 @@ def env(request):
 def url_start(env):  # env fixture ensures .env is loaded first
     return os.environ.get("BASE_URL")
 
+# This hook is called before each test phase (setup, call, teardown).
+def pytest_runtest_setup(item):
+    logger.info(f"▶ Starting {item.name}")
+    item.start_time = time.perf_counter()
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
@@ -107,6 +112,8 @@ def context(browser):
 def pytest_configure():
     logging.getLogger("faker").setLevel(logging.WARNING)
 
+
+
 # main tests fixture that yields page object
 # and then closes context and browser after yield as part of teardown
 @pytest.fixture(scope="function")
@@ -136,6 +143,7 @@ def page_instance(request, url_start):
         logger.info('Launching UI...')
 
         try:
+            page.on("dialog", lambda dialog: dialog.accept())
             yield page
         finally:
             context.close()

@@ -1,4 +1,4 @@
-from qa.pages.landing import LandingPage
+from qa.pages.landing_page import LandingPage
 import pytest
 from qa.utils.logging_utils import get_logger
 logger = get_logger(__name__)
