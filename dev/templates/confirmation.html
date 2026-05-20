@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking Confirmed</title>
+  <style>
+    :root {
+      --primary: #2c7a7b;
+      --accent: #38a169;
+      --bg: #edf2f7;
+      --text: #2d3748;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .card {
+      background: var(--white);
+      max-width: 600px;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+
+    .checkmark {
+      font-size: 4rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .details {
+      background: #f7fafc;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: left;
+      margin: 1.5rem 0;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 0.9rem 1.5rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+    }
+
+    .btn:hover { opacity: 0.95; }
+  </style>
+</head>
+<body>
+  <div class="card" data-testid="confirmation-card">
+    <div class="checkmark">✅</div>
+    <h1>Booking {{booking_details[8]}}!</h1>
+    <p>Thank you for booking your stay at {{cottage_nickname}} Cottage. A confirmation email has been sent to you.</p>
+
+    <div class="details">
+      <div class="detail-row">
+        <span>Booking ID</span>
+        <strong data-testid="booking-id">#{{booking_details[0]}}</strong>
+      </div>
+      <div class="detail-row">
+        <span>Guest</span>
+        <strong data-testid="guest-name">{{booking_details[1]}}</strong>
+      </div>
+      <div class="detail-row">
+        <span>Check-In</span>
+        <strong data-testid="checkin">{{booking_details[3]}}</strong>
+      </div>
+      <div class="detail-row">
+        <span>Check-Out</span>
+        <strong data-testid="checkout">{{booking_details[4]}}</strong>
+      </div>
+      <div class="detail-row">
+        <span>Total</span>
+        <strong data-testid="total">${{booking_details[7]}}</strong>
+      </div>
+       <div class="detail-row">
+        <span>Number of Guests</span>
+        <strong data-testid="guests_count">{{booking_details[5]}}</strong>
+      </div>
+       <div class="detail-row">
+        <span>Special Requests</span>
+        <strong data-testid="special_requests">{{booking_details[6]}}</strong>
+      </div>
+    </div>
+
+    <a href="{{ url_for('home')}}" class="btn" data-testid="return-home">Return Home</a>
+  </div>
+</body>
+</html>

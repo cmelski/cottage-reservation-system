@@ -1,9 +1,12 @@
+import random
 from pathlib import Path
 import logging
 logger = logging.getLogger(__name__)
 import pytest
 import os
 import time
+from faker import Faker
+from datetime import timedelta
 
 # load env file variables
 from dotenv import load_dotenv
@@ -111,7 +114,24 @@ def context(browser):
 # remove logging noise from faker module
 def pytest_configure():
     logging.getLogger("faker").setLevel(logging.WARNING)
-
+@pytest.fixture()
+def new_booking_data():
+    fake = Faker('en_GB')
+    full_name = fake.name()
+    email = fake.email()
+    checkin_date = fake.future_date()
+    checkout_date = checkin_date + timedelta(days=3)
+    number_of_guests_choices = ['1', '2', '3', '4', '5+']
+    number_of_guests = random.choice(number_of_guests_choices)
+    special_requests = fake.sentence()
+    return {
+        'full_name': full_name,
+        'email': email,
+        'checkin_date': checkin_date.isoformat(),
+        'checkout_date': checkout_date.isoformat(),
+        'number_of_guests': number_of_guests,
+        'special_requests': special_requests
+    }
 
 
 # main tests fixture that yields page object
@@ -143,6 +163,7 @@ def page_instance(request, url_start):
         logger.info('Launching UI...')
 
         try:
+            # auto accept javascript alerts
             page.on("dialog", lambda dialog: dialog.accept())
             yield page
         finally:

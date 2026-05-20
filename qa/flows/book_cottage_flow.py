@@ -1,4 +1,6 @@
 from qa.pages.landing_page import LandingPage
+from qa.pages.confirmation_page import ConfirmationPage
+from playwright.sync_api import expect
 
 
 class BookCottageFlow:
@@ -14,4 +16,10 @@ class BookCottageFlow:
         landing_page.booking_form.select_checkout_date(checkout)
         landing_page.booking_form.select_number_of_guests(guest_count)
         landing_page.booking_form.enter_special_requests(requests)
+        # self.page.wait_for_function(
+        #     "Number(document.getElementById('total_price_input').value) > 0"
+        # )
+        expect(landing_page.booking_form.total_price_input).not_to_have_value("")
         landing_page.booking_form.click_reserve()
+        return ConfirmationPage(self.page)
+

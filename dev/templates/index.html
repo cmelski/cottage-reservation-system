@@ -149,7 +149,7 @@
   <div class="container">
     <section class="card">
       <h2>Reserve Your Stay</h2>
-      <form id="reservationForm">
+      <form id="reservationForm" method="POST" action="{{ url_for('submit_booking')}}">
         <div class="grid">
           <div>
             <label for="name">Full Name</label>
@@ -163,17 +163,18 @@
 
           <div>
             <label for="checkin">Check-In</label>
-            <input data-testid="checkin-date" id="checkin" type="date" required />
+            <input data-testid="checkin-date" id="checkin" type="date" name="checkin"
+                   required />
           </div>
 
           <div>
             <label for="checkout">Check-Out</label>
-            <input data-testid="checkout-date" type="date" id="checkout" required />
+            <input data-testid="checkout-date" type="date" id="checkout" name="checkout" required />
           </div>
 
           <div>
             <label for="guests">Guests</label>
-            <select data-testid="number-of-guests" id="guests">
+            <select data-testid="number-of-guests" id="guests" name="guests">
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -185,12 +186,14 @@
 
         <div style="margin-top:1rem;">
           <label for="notes">Special Requests</label>
-          <textarea data-testid="special-requests" id="notes" rows="4"></textarea>
+          <textarea data-testid="special-requests" id="notes" name="special-requests" rows="4"></textarea>
         </div>
 
         <div class="price-box">
-          <strong>Estimated Price:</strong> <span id="price">$0</span>
+          <strong>Estimated Price:</strong> <span data-testid="total_price" id="price"></span>
         </div>
+        <input type="hidden" name="total_price" id="total_price_input">
+        <input type="hidden" name="cottage_nickname" id="cottage_nickname_input">
 
         <button data-testid="reserve-button" type="submit">Reserve Now</button>
       </form>
@@ -208,31 +211,62 @@
   </div>
 
   <script>
-    const nightlyRate = 250;
-    const checkin = document.getElementById('checkin');
-    const checkout = document.getElementById('checkout');
-    const price = document.getElementById('price');
+const state = {
+  cottageInfo: {}
+};
 
-    function updatePrice() {
-      if (checkin.value && checkout.value) {
-        const start = new Date(checkin.value);
-        const end = new Date(checkout.value);
-        const diff = (end - start) / (1000 * 60 * 60 * 24);
-        if (diff > 0) {
-          price.textContent = `$${diff * nightlyRate}`;
-        } else {
-          price.textContent = '$0';
-        }
+const BASE_URL = '';
+
+async function apiGet(path) {
+  const res = await fetch(BASE_URL + path);
+  if (!res.ok) throw new Error(res.statusText);
+  return res.json();
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const checkin = document.getElementById("checkin");
+  const checkout = document.getElementById("checkout");
+  const price = document.getElementById("price");
+  const hiddenPrice =
+    document.getElementById("total_price_input");
+
+  function updatePrice() {
+    if (!state.cottageInfo.nightly_rate) return;
+
+    if (checkin.value && checkout.value) {
+      const start = new Date(checkin.value);
+      const end = new Date(checkout.value);
+
+      const diff =
+        (end - start) / (1000 * 60 * 60 * 24);
+
+      if (diff > 0) {
+        const total =
+          diff * state.cottageInfo.nightly_rate;
+
+        price.textContent = `$${total}`;
+        hiddenPrice.value = total;
+      } else {
+        price.textContent = "$0";
+        hiddenPrice.value = 0;
       }
     }
+  }
 
-    checkin.addEventListener('change', updatePrice);
-    checkout.addEventListener('change', updatePrice);
+  checkin.addEventListener("input", updatePrice);
+  checkout.addEventListener("input", updatePrice);
 
-    document.getElementById('reservationForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Reservation submitted! Hook this to your backend API.');
-    });
+  try {
+    const data = await apiGet("/api/cottage-info");
+    state.cottageInfo = data.cottage_info;
+
+    // important in case dates already filled
+    updatePrice();
+
+  } catch (e) {
+    console.error(e);
+  }
+});
   </script>
 </body>
 </html>
