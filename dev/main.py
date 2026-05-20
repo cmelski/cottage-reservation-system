@@ -25,8 +25,9 @@ from dev.db.db_client import DBClient
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
-create_db()
-create_table()
+def init_db():
+    create_db()
+    create_table()
 
 
 def get_cottage_info():
@@ -75,5 +76,6 @@ def submit_booking():
 
 
 if __name__ == "__main__":
+    init_db()
     # app.run(debug=app.config.get("DEBUG", False), port=5002)
     app.run(host="0.0.0.0", port=5002, debug=app.config.get("DEBUG", False))
