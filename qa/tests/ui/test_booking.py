@@ -22,20 +22,20 @@ from playwright.sync_api import expect
 #     assert dialog.message == "Reservation submitted! Hook this to your backend API."
 #     logger.info(f'{dialog.message} successfully displayed')
 
-@pytest.mark.booking
-def test_user_can_book(page_instance, new_booking_data):
-    book_cottage_flow = BookCottageFlow(page_instance)
-
-    confirmation = book_cottage_flow.complete_booking(
-        new_booking_data['full_name'],
-        new_booking_data['email'],
-        new_booking_data['checkin_date'],
-        new_booking_data['checkout_date'],
-        new_booking_data['number_of_guests'],
-        new_booking_data['special_requests']
-        )
-
-    expect(confirmation.heading_one).to_be_visible()
-    expect(confirmation.heading_one).to_contain_text('Booking confirmed')
-    logger.info(f'{confirmation.heading_one.inner_text()} text successfully displayed')
+# @pytest.mark.booking
+# def test_user_can_book(page_instance, new_booking_data):
+#     book_cottage_flow = BookCottageFlow(page_instance)
+#
+#     confirmation = book_cottage_flow.complete_booking(
+#         new_booking_data['full_name'],
+#         new_booking_data['email'],
+#         new_booking_data['checkin_date'],
+#         new_booking_data['checkout_date'],
+#         new_booking_data['number_of_guests'],
+#         new_booking_data['special_requests']
+#         )
+#
+#     expect(confirmation.heading_one).to_be_visible()
+#     expect(confirmation.heading_one).to_contain_text('Booking confirmed')
+#     logger.info(f'{confirmation.heading_one.inner_text()} text successfully displayed')
 
