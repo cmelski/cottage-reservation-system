@@ -30,7 +30,7 @@ jobs:
 
       - name: Start Flask app
         run: |
-          gunicorn dev.main:app --bind 127.0.0.1:5000 &
+          gunicorn dev.main:app --bind 127.0.0.1:5002 &
           sleep 5
 
       - name: Run QA tests
