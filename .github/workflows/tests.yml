@@ -46,6 +46,10 @@ jobs:
         run: |
           python -m playwright install --with-deps
 
+      - name: Create database schema
+        run: |
+          python dev/db/db_create.py
+
       - name: Start Flask app
         run: |
           gunicorn dev.main:app --bind 127.0.0.1:5002 &
