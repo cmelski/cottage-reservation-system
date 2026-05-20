@@ -29,7 +29,7 @@ def pytest_addoption(parser):
         "--env", action="store", default="test", help="Environment to run tests against")
 
     parser.addoption(
-        "--headless", action="store_true", default=False, help="Run browser in headless mode"
+        "--headless", action="store_true", default=True, help="Run browser in headless mode"
     )
 
     parser.addoption(
