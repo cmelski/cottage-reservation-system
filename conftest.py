@@ -57,9 +57,9 @@ def env(request):
 
 
 # return the BASE_URL from the loaded .env file for use in tests
-@pytest.fixture(scope="session")
-def url_start(env):  # env fixture ensures .env is loaded first
-    return os.environ.get("BASE_URL")
+@pytest.fixture
+def url_start():
+    return os.getenv("BASE_URL", "http://127.0.0.1:5002/")
 
 # This hook is called before each test phase (setup, call, teardown).
 def pytest_runtest_setup(item):
@@ -139,7 +139,7 @@ def page_instance(request, url_start):
     browser_name = request.config.getoption("browser_name")
     headed = request.config.getoption("headed")
     headless = not headed
-    base_url = url_start or "http://127.0.0.1:5002/"
+
 
     with sync_playwright() as p:
         if browser_name == "chrome":
@@ -158,7 +158,7 @@ def page_instance(request, url_start):
 
         page = context.new_page()
 
-        page.goto(base_url)
+        page.goto(url_start)
 
         logger.info('Launching UI...')
 
