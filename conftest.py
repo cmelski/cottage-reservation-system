@@ -28,9 +28,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--env", action="store", default="test", help="Environment to run tests against")
 
-    parser.addoption(
-        "--headless", action="store_true", default=True, help="Run browser in headless mode"
-    )
+
 
     parser.addoption(
         "--build-version", action="store", default="unknown", help="Build version for test run tracking"
@@ -139,7 +137,8 @@ def new_booking_data():
 @pytest.fixture(scope="function")
 def page_instance(request, url_start):
     browser_name = request.config.getoption("browser_name")
-    headless = request.config.getoption("--headless")
+    headed = request.config.getoption("headed")
+    headless = not headed
     base_url = url_start or "http://127.0.0.1:5002/"
 
     with sync_playwright() as p:
