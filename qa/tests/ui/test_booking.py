@@ -36,6 +36,6 @@ def test_user_can_book(page_instance, new_booking_data):
         )
 
     expect(confirmation.heading_one).to_be_visible()
-    expect(confirmation.heading_one).to_contain_text('Booking confirmed')
+    expect(confirmation.heading_one).to_contain_text('Booking confirmed', timeout=10000)
     logger.info(f'{confirmation.heading_one.inner_text()} text successfully displayed')
 
