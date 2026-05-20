@@ -140,6 +140,7 @@ def new_booking_data():
 def page_instance(request, url_start):
     browser_name = request.config.getoption("browser_name")
     headless = request.config.getoption("--headless")
+    base_url = url_start or "http://127.0.0.1:5002/"
 
     with sync_playwright() as p:
         if browser_name == "chrome":
@@ -158,7 +159,7 @@ def page_instance(request, url_start):
 
         page = context.new_page()
 
-        page.goto(url_start)
+        page.goto(base_url)
 
         logger.info('Launching UI...')
 
