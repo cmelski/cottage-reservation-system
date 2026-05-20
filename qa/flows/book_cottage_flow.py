@@ -35,5 +35,5 @@ class BookCottageFlow:
         #  )
         #expect(landing_page.booking_form.total_price_input).not_to_have_value("")
         landing_page.booking_form.click_reserve()
-        return ConfirmationPage(self.page)
+        #return ConfirmationPage(self.page)
 
