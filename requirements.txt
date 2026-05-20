@@ -48,3 +48,4 @@ sqlalchemy
 Pillow
 boto3
 reportlab
+Faker
