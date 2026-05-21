@@ -34,6 +34,8 @@ class BookCottageFlow:
         #      "Number(document.getElementById('total_price_input').value) > 0"
         #  )
         #expect(landing_page.booking_form.total_price_input).not_to_have_value("")
+        logger.info('About to submit')
         landing_page.booking_form.click_reserve()
+        logger.info('Submit hit')
         #return ConfirmationPage(self.page)
 
