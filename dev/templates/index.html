@@ -232,28 +232,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("total_price_input");
 
   function updatePrice() {
-    if (!state.cottageInfo.nightly_rate) return;
 
-    if (checkin.value && checkout.value) {
-      const start = new Date(checkin.value);
-      const end = new Date(checkout.value);
+  if (checkin.value && checkout.value) {
+    const start = new Date(checkin.value);
+    const end = new Date(checkout.value);
 
-      const diff =
-        (end - start) / (1000 * 60 * 60 * 24);
+    const diff =
+      (end - start) / (1000 * 60 * 60 * 24);
 
-      if (diff > 0) {
-        const total =
-          diff * state.cottageInfo.nightly_rate;
+    if (diff > 0) {
 
-        price.textContent = `$${total}`;
-        hiddenPrice.value = total;
-      } else {
-        price.textContent = "$0";
-        hiddenPrice.value = 0;
-      }
+      const rate = state.cottageInfo.nightly_rate || 100.00;
+      const total = diff * rate;
+
+      price.textContent = `$${total}`;
+      hiddenPrice.value = total;
+
+    } else {
+      price.textContent = "$0";
+      hiddenPrice.value = 0;
     }
   }
-
+}
   checkin.addEventListener("change", updatePrice);
   checkout.addEventListener("change", updatePrice);
 
