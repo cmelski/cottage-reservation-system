@@ -5,16 +5,7 @@ class ImageGallery:
         self.page = page
         self.gallery = page.get_by_test_id("image-gallery")
 
-    def scroll_left(self):
-        gallery = self.gallery
-        gallery.hover()
-        self.page.mouse.wheel(500, 0)
-        scroll_pos = gallery.evaluate("el => el.scrollLeft")
-        return scroll_pos
+    def get_image_count(self):
+        image_count = self.gallery.locator('img').count()
+        return image_count
 
-    def scroll_right(self):
-        gallery = self.gallery
-        gallery.hover()
-        self.page.mouse.wheel(-500, 0)
-        scroll_pos = gallery.evaluate("el => el.scrollLeft")
-        return scroll_pos
