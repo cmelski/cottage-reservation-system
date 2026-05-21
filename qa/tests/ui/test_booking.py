@@ -24,9 +24,10 @@ from playwright.sync_api import expect
 
 @pytest.mark.booking
 def test_user_can_book(page_instance, new_booking_data):
-    page_instance.wait_for_response(
-        lambda r: "/api/cottage-info" in r.url and r.status == 200
-    )
+    with page_instance.expect_response(
+            lambda r: "/api/cottage-info" in r.url and r.status == 200
+    ):
+        pass  # trigger happens automatically on page load
     book_cottage_flow = BookCottageFlow(page_instance)
 
 
