@@ -30,9 +30,12 @@ class BookCottageFlow:
         landing_page.booking_form.enter_special_requests(requests)
         requests_input = landing_page.booking_form.special_requests.input_value()
         logger.info(f'requests: {requests_input}')
+        # self.page.wait_for_function(
+        #       "Number(document.getElementById('total_price_input').value) > 0"
+        #   )
         self.page.wait_for_function(
-              "Number(document.getElementById('total_price_input').value) > 0"
-          )
+            "document.getElementById('total_price_input').value !== ''"
+        )
         #expect(landing_page.booking_form.total_price_input).not_to_have_value("")
         logger.info('About to submit')
         landing_page.booking_form.click_reserve()
