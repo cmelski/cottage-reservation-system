@@ -24,7 +24,15 @@ from playwright.sync_api import expect
 
 @pytest.mark.booking
 def test_user_can_book(page_instance, new_booking_data):
+    page_instance.on(
+        "response",
+        lambda r: logger.info(
+            f"API RESPONSE: {r.status} {r.url}"
+            if "/api/cottage-info" in r.url else ""
+        )
+    )
     book_cottage_flow = BookCottageFlow(page_instance)
+
 
     book_cottage_flow.complete_booking(
         new_booking_data['full_name'],
