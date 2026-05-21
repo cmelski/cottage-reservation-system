@@ -165,10 +165,6 @@ def page_instance(request, url_start):
         try:
             # auto accept javascript alerts
             page.on("dialog", lambda dialog: dialog.accept())
-            with page.expect_response(
-                    lambda r: "/api/cottage-info" in r.url and r.status == 200
-            ):
-                pass  # trigger happens automatically on page load
             yield page
         finally:
             context.close()
