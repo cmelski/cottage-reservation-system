@@ -14,6 +14,8 @@ def test_gallery_scroll(page_instance):
     }
     """)
     expect(landing_page.image_gallery.gallery).to_be_visible()
+    image_count = page_instance.locator('div[data-testid="image-gallery"] img').count()
+    logger.info(f'Image count: {image_count}')
     scroll_pos_left = landing_page.image_gallery.scroll_left()
     assert scroll_pos_left > 0
     logger.info(f'Scroll position left: {scroll_pos_left}')
