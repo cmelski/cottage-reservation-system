@@ -30,11 +30,20 @@ class BookCottageFlow:
         landing_page.booking_form.enter_special_requests(requests)
         requests_input = landing_page.booking_form.special_requests.input_value()
         logger.info(f'requests: {requests_input}')
+        self.page.evaluate("""
+        () => {
+          document.getElementById('checkin').dispatchEvent(new Event('change'));
+          document.getElementById('checkout').dispatchEvent(new Event('change'));
+        }
+        """)
         # self.page.wait_for_function(
         #       "Number(document.getElementById('total_price_input').value) > 0"
         #   )
+        # self.page.wait_for_function(
+        #     "document.getElementById('total_price_input').value !== ''"
+        # )
         self.page.wait_for_function(
-            "document.getElementById('total_price_input').value !== ''"
+            "document.getElementById('price').textContent.includes('$')"
         )
         #expect(landing_page.booking_form.total_price_input).not_to_have_value("")
         logger.info('About to submit')

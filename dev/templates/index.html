@@ -253,8 +253,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  checkin.addEventListener("input", updatePrice);
-  checkout.addEventListener("input", updatePrice);
+  checkin.addEventListener("change", updatePrice);
+  checkout.addEventListener("change", updatePrice);
 
   try {
     const data = await apiGet("/api/cottage-info");
