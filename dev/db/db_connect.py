@@ -13,6 +13,11 @@ class DBConnect:
             port=os.environ.get('DB_PORT')
         )
 
+        print("DB_HOST =", os.environ.get("DB_HOST"))
+        print("DB_NAME =", os.environ.get("DB_NAME"))
+        print("DB_USER =", os.environ.get("DB_USER"))
+        print("Connected to DB successfully")
+
         self.host = os.getenv("DB_HOST")
 
         if not self.host:
