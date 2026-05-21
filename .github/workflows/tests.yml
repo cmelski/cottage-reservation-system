@@ -40,7 +40,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-playwright flask gunicorn
 
       - name: Install Playwright browsers
         run: |
@@ -53,11 +52,14 @@ jobs:
       - name: Start Flask app
         run: |
           gunicorn dev.main:app --bind 127.0.0.1:5002 &
-          sleep 5
+          until curl -s http://127.0.0.1:5002 > /dev/null; do
+            echo "Waiting for Flask..."
+            sleep 1
+          done
 
       - name: Run QA tests
         run: |
-          pytest qa/tests --log-cli-level=INFO --html=report.html --self-contained-html
+          python -m pytest qa/tests --log-cli-level=INFO --html=report.html --self-contained-html
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
@@ -66,5 +68,6 @@ jobs:
           path: report.html
 
       - name: Dump DB contents
+        if: always()
         run: |
           PGPASSWORD=postgres psql -h localhost -U postgres -d testdb -c "SELECT * FROM booking;"
