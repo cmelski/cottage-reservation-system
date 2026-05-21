@@ -7,6 +7,12 @@ from playwright.sync_api import expect
 @pytest.mark.image_gallery
 def test_gallery_scroll(page_instance):
     landing_page = LandingPage(page_instance)
+    page_instance.wait_for_function("""
+    () => {
+      const el = document.querySelector('[data-testid="image-gallery"]');
+      return el && el.scrollWidth > el.clientWidth;
+    }
+    """)
     expect(landing_page.image_gallery.gallery).to_be_visible()
     scroll_pos_left = landing_page.image_gallery.scroll_left()
     assert scroll_pos_left > 0
