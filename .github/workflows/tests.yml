@@ -63,6 +63,22 @@ jobs:
             sleep 1
           done
 
+      - name: Seed cottage info
+        run: |
+          python -c "
+          from dev.db.db_connect import DBConnect
+
+          db = DBConnect()
+          cursor = db.connection.cursor
+
+          cursor.execute(\"\"\"
+          INSERT INTO cottage_info (nickname, nightly_rate, capacity, status)
+          VALUES ('Serenity', 300.00, '6', 'available');
+          \"\"\")
+
+          db.connection.commit()
+          "
+
       - name: Check API directly
         run: |
           curl -v http://127.0.0.1:5002/api/cottage-info
