@@ -69,7 +69,7 @@ jobs:
           from dev.db.db_connect import DBConnect
 
           db = DBConnect()
-          cursor = db.connection.cursor
+          cursor = db.connection.cursor()
 
           cursor.execute(\"\"\"
           INSERT INTO cottage_info (nickname, nightly_rate, capacity, status)
