@@ -1,3 +1,4 @@
+import json
 import random
 from pathlib import Path
 import logging
@@ -131,6 +132,11 @@ def new_booking_data():
         'special_requests': special_requests
     }
 
+@pytest.fixture()
+def api_config_loader():
+    with open('qa/api/config.json') as f:
+        config_data = json.load(f)
+    return config_data
 
 # main tests fixture that yields page object
 # and then closes context and browser after yield as part of teardown

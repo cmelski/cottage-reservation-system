@@ -1,0 +1,14 @@
+{
+  "environment": "test",
+  "timeout": 5,
+  "endpoints": [
+    {
+      "name": "cottage_info",
+      "method": "GET",
+      "url": "api/cottage-info",
+      "expected_status": 200
+    }
+
+
+  ]
+}
