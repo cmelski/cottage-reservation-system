@@ -34,7 +34,7 @@ def test_user_can_book(page_instance, new_booking_data):
     book_cottage_flow = BookCottageFlow(page_instance)
 
 
-    book_cottage_flow.complete_booking(
+    confirmation = book_cottage_flow.complete_booking(
         new_booking_data['full_name'],
         new_booking_data['email'],
         new_booking_data['checkin_date'],
@@ -43,7 +43,8 @@ def test_user_can_book(page_instance, new_booking_data):
         new_booking_data['special_requests']
         )
 
-    #expect(confirmation.heading_one).to_be_visible()
-    #expect(confirmation.heading_one).to_contain_text('Booking confirmed', timeout=10000)
-    #logger.info(f'{confirmation.heading_one.inner_text()} text successfully displayed')
+    expect(confirmation.heading_one).to_be_visible()
+    expect(confirmation.heading_one).to_contain_text('Booking confirmed', timeout=10000)
+    logger.info(f'{confirmation.heading_one.inner_text()} text successfully displayed')
+    logger.info(f'{confirmation.confirmation_message.inner_text()}')
 

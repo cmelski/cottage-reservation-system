@@ -30,6 +30,9 @@ class BookCottageFlow:
         landing_page.booking_form.enter_special_requests(requests)
         requests_input = landing_page.booking_form.special_requests.input_value()
         logger.info(f'requests: {requests_input}')
+        cottage_nickname = landing_page.booking_form.cottage_nickname_input.input_value()
+        logger.info(f'Cottage nickname: {cottage_nickname}')
+
         self.page.evaluate("""
         () => {
           document.getElementById('checkin').dispatchEvent(new Event('change'));
@@ -47,7 +50,9 @@ class BookCottageFlow:
         )
         #expect(landing_page.booking_form.total_price_input).not_to_have_value("")
         logger.info('About to submit')
+        price = landing_page.booking_form.total_price_input.input_value()
+        logger.info(f'Price: {price}')
         landing_page.booking_form.click_reserve()
         logger.info('Submit hit')
-        #return ConfirmationPage(self.page)
+        return ConfirmationPage(self.page)
 

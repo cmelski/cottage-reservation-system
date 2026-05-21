@@ -195,6 +195,7 @@
         <input type="hidden" name="total_price" id="total_price_input">
         <input type="hidden" name="cottage_nickname" id="cottage_nickname_input">
 
+
         <button data-testid="reserve-button" type="submit">Reserve Now</button>
       </form>
     </section>
@@ -258,7 +259,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const data = await apiGet("/api/cottage-info");
+    console.log(data);
     state.cottageInfo = data.cottage_info;
+    console.log(state.cottageInfo);
+    const cottageNickname = document.getElementById("cottage_nickname_input");
+    console.log(cottageNickname);
+    cottageNickname.value = state.cottageInfo.nickname;
 
     // important in case dates already filled
     updatePrice();

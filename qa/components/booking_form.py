@@ -10,6 +10,7 @@ class BookingForm:
         self.special_requests = page.get_by_test_id("special-requests")
         self.total_price = page.locator("#price")
         self.total_price_input = page.locator("#total_price_input")
+        self.cottage_nickname_input = page.locator("#cottage_nickname_input")
         self.reserve_button = page.get_by_test_id("reserve-button")
 
     def enter_full_name(self, full_name):
