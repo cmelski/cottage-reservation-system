@@ -23,7 +23,7 @@ from playwright.sync_api import expect
 #     logger.info(f'{dialog.message} successfully displayed')
 
 @pytest.mark.booking
-def test_user_can_book(page_instance, new_booking_data):
+def test_user_can_book(reset_db, page_instance, new_booking_data):
 
     book_cottage_flow = BookCottageFlow(page_instance)
 

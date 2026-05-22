@@ -13,6 +13,7 @@ from datetime import timedelta
 from dotenv import load_dotenv
 
 from playwright.sync_api import sync_playwright
+from qa.db.db_client import DBClient
 
 
 # define test run parameters
@@ -137,6 +138,25 @@ def api_config_loader():
     with open('qa/api/config.json') as f:
         config_data = json.load(f)
     return config_data
+
+@pytest.fixture()
+def db_client():
+    db_client = DBClient()
+    yield db_client
+    db_client.close()
+
+@pytest.fixture()
+def reset_db(db_client):
+    with open('qa/db/db_tables.json') as f:
+        db_tables = json.load(f)
+    # purge tables
+    tables = db_tables['tables']
+    db_client.clean_db_tables(tables)
+    # populate required tables
+    with open('qa/data/new_cottage_details.json') as f:
+        cottage_details = json.load(f)['cottage_info']
+    db_client.add_cottage_to_db(cottage_details)
+
 
 # main tests fixture that yields page object
 # and then closes context and browser after yield as part of teardown
