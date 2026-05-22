@@ -63,10 +63,6 @@ jobs:
             sleep 1
           done
 
-      - name: Check API directly
-        run: |
-          curl -v http://127.0.0.1:5002/api/cottage-info
-
       - name: Run QA tests
         run: |
           python -m pytest qa/tests --log-cli-level=INFO --html=report.html --self-contained-html
