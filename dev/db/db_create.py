@@ -67,4 +67,12 @@ def create_table():
                             );
                         """)
 
+            # reservation_dates table
+            cur.execute("""
+                        CREATE TABLE IF NOT EXISTS reservation_dates (
+                        booking_id INTEGER,
+                        date VARCHAR(10) NOT NULL
+                            );
+                        """)
+
         print("✅ Tables created successfully!")

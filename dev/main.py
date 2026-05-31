@@ -22,6 +22,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from dev.db.db_create import create_db, create_table
 from dev.db.db_client import DBClient
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
@@ -58,6 +59,7 @@ def home():
 @app.route("/submit_booking", methods=["GET", "POST"])
 def submit_booking():
     if request.method == "POST":
+
         booking_details = []
         full_name = request.form["name"]
         email = request.form["email"]
@@ -71,8 +73,12 @@ def submit_booking():
                                 number_of_guests, special_requests, total_price, 'confirmed'])
         db_client = DBClient()
         new_booking = db_client.add_booking_to_db(booking_details)
-        return render_template("confirmation.html", booking_details=new_booking,
-                               cottage_nickname=cottage_nickname)
+        if isinstance(new_booking[0], int):
+            return render_template("confirmation.html", booking_details=new_booking,
+                                cottage_nickname=cottage_nickname)
+        else:
+            flash("1 or more dates not available")
+            return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
