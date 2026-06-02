@@ -34,7 +34,7 @@ class DBClient:
         checkout = booking_details[3]
 
         available = check_availability(checkin, checkout, reservation_dates)
-        if len(available) == 0:
+        if len(available) == 0: # create booking as reservation dates don't conflict with existing dates
             cursor = self.connection.cursor
             cursor.execute("""
                     SELECT setval(
