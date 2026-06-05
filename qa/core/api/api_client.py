@@ -1,6 +1,6 @@
 import requests
 import time
-from qa.utils.logging_utils import get_logger
+from qa.core.utils.logging_utils import get_logger
 logger = get_logger(__name__)
 
 MAX_RETRIES = 3

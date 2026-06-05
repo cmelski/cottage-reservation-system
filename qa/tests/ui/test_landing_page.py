@@ -1,6 +1,6 @@
-from qa.pages.landing_page import LandingPage
+from qa.business_logic.pages.landing_page import LandingPage
 from playwright.sync_api import expect
-from qa.utils.logging_utils import get_logger
+from qa.core.utils.logging_utils import get_logger
 logger = get_logger(__name__)
 
 

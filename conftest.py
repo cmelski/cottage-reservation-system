@@ -2,6 +2,7 @@ import json
 import random
 from pathlib import Path
 import logging
+
 logger = logging.getLogger(__name__)
 import pytest
 import os
@@ -13,7 +14,8 @@ from datetime import timedelta
 from dotenv import load_dotenv
 
 from playwright.sync_api import sync_playwright
-from qa.db.db_client import DBClient
+from qa.business_logic.db_queries.queries import *
+from qa.business_logic.data.new_booking import NewBooking
 
 
 # define test run parameters
@@ -29,8 +31,6 @@ def pytest_addoption(parser):
 
     parser.addoption(
         "--env", action="store", default="test", help="Environment to run tests against")
-
-
 
     parser.addoption(
         "--build-version", action="store", default="unknown", help="Build version for test run tracking"
@@ -63,10 +63,12 @@ def env(request):
 def url_start():
     return os.getenv("BASE_URL", "http://127.0.0.1:5002/")
 
+
 # This hook is called before each test phase (setup, call, teardown).
 def pytest_runtest_setup(item):
     logger.info(f"▶ Starting {item.name}")
     item.start_time = time.perf_counter()
+
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
@@ -103,6 +105,7 @@ def pytest_runtest_makereport(item):
         else:
             logger.info(f"PASSED: {item.name}")
 
+
 @pytest.fixture
 def context(browser):
     context = browser.new_context()
@@ -111,51 +114,42 @@ def context(browser):
     context.tracing.stop(path="qa/logs/trace.zip")
     context.close()
 
+
 # remove logging noise from faker module
 def pytest_configure():
     logging.getLogger("faker").setLevel(logging.WARNING)
+
+
 @pytest.fixture()
-def new_booking_data():
-    fake = Faker('en_GB')
-    full_name = fake.name()
-    email = fake.email()
-    checkin_date = fake.future_date()
-    checkout_date = checkin_date + timedelta(days=3)
-    number_of_guests_choices = ['1', '2', '3', '4', '5+']
-    number_of_guests = random.choice(number_of_guests_choices)
-    special_requests = fake.sentence()
-    return {
-        'full_name': full_name,
-        'email': email,
-        'checkin_date': checkin_date.isoformat(),
-        'checkout_date': checkout_date.isoformat(),
-        'number_of_guests': number_of_guests,
-        'special_requests': special_requests
-    }
+def create_single_booking():
+    new_booking = NewBooking()
+    return new_booking.generate_new_reservation_details()
+
+
+@pytest.fixture()
+def create_multiple_bookings():
+    new_booking = NewBooking()
+    return [new_booking.generate_new_reservation_details() for i in range(10)]
+
 
 @pytest.fixture()
 def api_config_loader():
-    with open('qa/api/config.json') as f:
+    with open('qa/business_logic/config/api_config.json') as f:
         config_data = json.load(f)
     return config_data
 
-@pytest.fixture()
-def db_client():
-    db_client = DBClient()
-    yield db_client
-    db_client.close()
 
 @pytest.fixture()
-def reset_db(db_client):
-    with open('qa/db/db_tables.json') as f:
+def reset_db():
+    with open('qa/business_logic/config/db_tables.json') as f:
         db_tables = json.load(f)
     # purge tables
     tables = db_tables['tables']
-    db_client.clean_db_tables(tables)
+    clean_db_tables(tables)
     # populate required tables
-    with open('qa/data/new_cottage_details.json') as f:
+    with open('qa/business_logic/data/new_cottage_details.json') as f:
         cottage_details = json.load(f)['cottage_info']
-    db_client.add_cottage_to_db(cottage_details)
+    add_cottage_to_db(cottage_details)
 
 
 # main tests fixture that yields page object
@@ -165,7 +159,6 @@ def page_instance(request, url_start):
     browser_name = request.config.getoption("browser_name")
     headed = request.config.getoption("headed")
     headless = not headed
-
 
     with sync_playwright() as p:
         if browser_name == "chrome":

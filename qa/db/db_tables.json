@@ -1,4 +1,0 @@
-{
-  "environment": "test",
-  "tables": ["booking", "cottage_info"]
-}
