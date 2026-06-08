@@ -74,3 +74,12 @@ class DBClient:
             """, (booking_id, date))
 
         self.connection.commit()
+
+    def get_booking(self, booking_id):
+        cursor = self.connection.cursor
+        cursor.execute("""
+                          SELECT * FROM booking
+                          WHERE booking_id = %s;
+                          """, (booking_id,))  # <-- pass as tuple
+        booking = cursor.fetchone()
+        return booking

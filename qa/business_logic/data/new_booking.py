@@ -20,8 +20,9 @@ class NewBooking:
         number_of_guests = random.choice(number_of_guests_choices)
         special_requests = fake.sentence()
         self.update_checkin_date(checkout_date)
-        return (full_name, email, checkin_date.isoformat(), checkout_date.isoformat(),
+        data = (full_name, email, checkin_date.isoformat(), checkout_date.isoformat(),
                 number_of_guests, special_requests, price, status)
+        return data
 
     def update_checkin_date(self, checkout_date):
         self.checkin = checkout_date

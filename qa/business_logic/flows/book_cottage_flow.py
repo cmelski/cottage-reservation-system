@@ -9,8 +9,16 @@ class BookCottageFlow:
     def __init__(self, page):
         self.page = page
 
-    def complete_booking(self, full_name, email, checkin, checkout, guest_count, requests):
+    def complete_booking(self, booking_details):
+        full_name = booking_details[0]
+        email = booking_details[1]
+        checkin = booking_details[2]
+        checkout = booking_details[3]
+        guest_count = booking_details[4]
+        requests = booking_details[5]
+
         landing_page = LandingPage(self.page)
+
         landing_page.enter_full_name(full_name)
         name_input = landing_page.full_name.input_value()
         logger.info(f'name: {name_input}')

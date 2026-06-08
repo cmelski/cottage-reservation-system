@@ -1,8 +1,10 @@
+"""reset the db using a fixture and test new booking can be created."""
 from dev.db.db_client import DBClient
 from qa.business_logic.data.new_booking import NewBooking
 
 
 def test_add_reservation(reset_db):
+    """reset the db using a fixture and test new booking can be created."""
     # connect to DB
     db_client = DBClient()
 
@@ -17,4 +19,3 @@ def test_add_reservation(reset_db):
     # slice out the ID
 
     assert new_booking[1:] == list(booking_details)
-

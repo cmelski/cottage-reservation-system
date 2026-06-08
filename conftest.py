@@ -1,5 +1,4 @@
 import json
-import random
 from pathlib import Path
 import logging
 
@@ -7,15 +6,12 @@ logger = logging.getLogger(__name__)
 import pytest
 import os
 import time
-from faker import Faker
-from datetime import timedelta
 
 # load env file variables
 from dotenv import load_dotenv
 
 from playwright.sync_api import sync_playwright
 from qa.business_logic.db_queries.queries import *
-from qa.business_logic.data.new_booking import NewBooking
 
 
 # define test run parameters
@@ -118,25 +114,6 @@ def context(browser):
 # remove logging noise from faker module
 def pytest_configure():
     logging.getLogger("faker").setLevel(logging.WARNING)
-
-
-@pytest.fixture()
-def create_single_booking():
-    new_booking = NewBooking()
-    return new_booking.generate_new_reservation_details()
-
-
-@pytest.fixture()
-def create_multiple_bookings():
-    new_booking = NewBooking()
-    return [new_booking.generate_new_reservation_details() for i in range(10)]
-
-
-@pytest.fixture()
-def api_config_loader():
-    with open('qa/business_logic/config/api_config.json') as f:
-        config_data = json.load(f)
-    return config_data
 
 
 @pytest.fixture()
