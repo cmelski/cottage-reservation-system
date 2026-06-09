@@ -64,7 +64,7 @@ def test_single_booking(reset_db, page_instance, create_single_booking):
         booking_api_data["checkout_date"],
         booking_api_data["number_of_guests"],
         booking_api_data["special_requests"],
-        booking_api_data["total_price"],
+        float(booking_api_data["total_price"]),
         booking_api_data["status"]
     ]
     new_booking_data = list(create_single_booking)
@@ -108,7 +108,7 @@ def test_multiple_bookings(reset_db, page_instance, create_multiple_bookings):
             booking_api_data["checkout_date"],
             booking_api_data["number_of_guests"],
             booking_api_data["special_requests"],
-            booking_api_data["total_price"],
+            float(booking_api_data["total_price"]),
             booking_api_data["status"]
         ]
         new_booking_data = list(booking)
