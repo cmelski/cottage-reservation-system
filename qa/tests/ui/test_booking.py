@@ -55,7 +55,26 @@ def test_single_booking(reset_db, page_instance, create_single_booking):
     booking_id_api = booking_api_data['booking_id']
     assert booking_id_api == booking_id_confirmation_page
     logger.info(f'UI booking id: {booking_id_confirmation_page} matches booking id from api call: '
-                f'{booking_api_data['booking_id']}')
+                f'{booking_id_api}')
+
+    api_response_data = [
+        booking_api_data["full_name"],
+        booking_api_data["email"],
+        booking_api_data["checkin_date"],
+        booking_api_data["checkout_date"],
+        booking_api_data["number_of_guests"],
+        booking_api_data["special_requests"],
+        booking_api_data["total_price"],
+        booking_api_data["status"]
+    ]
+    new_booking_data = list(create_single_booking)
+
+    assert api_response_data == new_booking_data
+
+    logger.info(f'API response data: {api_response_data} matches new booking data: '
+                f'{new_booking_data}')
+
+
 
 
 @pytest.mark.multiple_bookings
@@ -80,6 +99,23 @@ def test_multiple_bookings(reset_db, page_instance, create_multiple_bookings):
         booking_id_api = booking_api_data['booking_id']
         assert booking_id_api == booking_id_confirmation_page
         logger.info(f'UI booking id: {booking_id_confirmation_page} matches booking id from api call: '
-                    f'{booking_api_data['booking_id']}')
+                    f'{booking_id_api}')
+
+        api_response_data = [
+            booking_api_data["full_name"],
+            booking_api_data["email"],
+            booking_api_data["checkin_date"],
+            booking_api_data["checkout_date"],
+            booking_api_data["number_of_guests"],
+            booking_api_data["special_requests"],
+            booking_api_data["total_price"],
+            booking_api_data["status"]
+        ]
+        new_booking_data = list(booking)
+
+        assert api_response_data == new_booking_data
+
+        logger.info(f'API response data: {api_response_data} matches new booking data: '
+                    f'{new_booking_data}')
 
         confirmation.click_return_home()
