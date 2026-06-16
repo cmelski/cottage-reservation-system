@@ -1,0 +1,33 @@
+
+{
+  "environment": "prod",
+
+  "api": {
+    "get_reservation_endpoint": "api/get_reservation_by_booking_id",
+    "add_reservation_endpoint": "api/add_reservation",
+    "timeout": 30
+  },
+
+  "ui": {
+    "base_url": "https://qa.example.com"
+  },
+
+  "database": {
+    "reset_tables": ["booking", "cottage_info", "reservation_dates"]
+  },
+
+  "auth": {
+    "token": "your-api-token"
+  },
+
+  "browser": {
+    "type": "chromium",
+    "headless": true
+  },
+
+  "feature_flags": {
+    "enable_email_notifications": true,
+    "enable_new_checkout": false
+  }
+}
+

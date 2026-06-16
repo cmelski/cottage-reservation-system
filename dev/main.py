@@ -21,6 +21,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from dev.db.db_create import create_db, create_table
 from dev.db.db_client import DBClient
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -52,6 +53,27 @@ def fetch_cottage_info():
     })
 
 
+@app.get("/api/availability")
+def get_availability():
+    checkin = datetime.strptime(
+        request.args["checkin"],
+        "%Y-%m-%d"
+    ).date()
+
+    checkout = datetime.strptime(
+        request.args["checkout"],
+        "%Y-%m-%d"
+    ).date()
+
+    db_client = DBClient()
+    results = db_client.get_availability(
+        checkin,
+        checkout
+    )
+
+    return jsonify(results)
+
+
 def get_booking(booking_id):
     db_client = DBClient()
     row = db_client.get_booking(booking_id)
@@ -66,6 +88,53 @@ def get_booking(booking_id):
         "total_price": row[7],
         "status": row[8]
     }
+
+
+@app.route('/api/add_reservation', methods=['POST'])
+def add_reservation():
+    db_client = DBClient()
+    try:
+        # print("Raw request data:", request.data)
+        data = request.get_json(force=True)
+        # print("Parsed data:", data)
+
+        if not data:
+            return jsonify({"error": "No JSON received"}), 400
+
+        reservation_details = []
+        full_name = data['full_name']
+        email = data['email']
+        checkin = data['checkin']
+        checkout = data['checkout']
+        number_of_guests = data['number_of_guests']
+        special_requests = data['special_requests']
+        price = data['price']
+        status = data['status']
+
+        reservation_details.extend([full_name, email, checkin, checkout, number_of_guests,
+                                    special_requests, price, status])
+
+
+        new_reservation = db_client.add_booking_to_db(reservation_details)
+
+
+        return jsonify({"message": "Booking added successfully",
+                        "booking": {
+                            "id": new_reservation[0],
+                            "full_name": new_reservation[1],
+                            "email": new_reservation[2],
+                            "checkin": new_reservation[3],
+                            "checkout": new_reservation[4],
+                            "number_of_guests": new_reservation[5],
+                            "special_requests": new_reservation[6],
+                            "price": new_reservation[7],
+                            "status": new_reservation[8]
+                        }
+                        }), 201
+
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route('/api/get_reservation_by_booking_id/<int:booking_id>', methods=['GET'])

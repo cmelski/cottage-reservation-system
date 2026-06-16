@@ -14,5 +14,13 @@ class ConfirmationPage:
     def click_return_home(self):
         self.ui_actions.click_element(self.return_home_button)
 
-    def get_booking_id(self):
-        return int(self.booking_id.inner_text().split('#')[1])
+    def get_confirmation_details(self):
+        booking_id = int(self.booking_id.inner_text().split('#')[1])
+        heading_one_text = self.heading_one.inner_text()
+        confirmation_text = self.confirmation_message.inner_text()
+
+        return {
+            'booking_id': booking_id,
+            'heading_one_text': heading_one_text,
+            'confirmation_text': confirmation_text
+        }

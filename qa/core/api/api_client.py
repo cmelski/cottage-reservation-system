@@ -8,11 +8,17 @@ RETRY_DELAY = 1  # seconds between retries
 
 
 class APIClient:
-    def __init__(self, base_url, token: str = None):
+    def __init__(self, base_url, token: str = None, trace_id: str = None, config = None):
         self.base_url = base_url
         self.session = requests.session()
+        if config:
+            self.config = config
         if token:
             self.session.headers.update({'token': token})
+        if trace_id:
+            self.session.headers.update({
+                "X-Trace-Id": trace_id
+            })
 
     def call_api_with_retry(self, endpoint: str, method: str = "GET", **kwargs) -> requests.Response:
         """
@@ -25,6 +31,9 @@ class APIClient:
             try:
                 logger.info(f'Endpoint: {self.base_url+endpoint}')
                 logger.info(f'Method: {method}')
+                logger.info(
+                    f"TRACE={self.session.headers.get('X-Trace-Id')}"
+                )
                 response = requests.request(method, self.base_url+endpoint, **kwargs)
 
                 # If status is in 400s (client error), do NOT retry — fail immediately

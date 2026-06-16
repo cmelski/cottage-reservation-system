@@ -211,16 +211,21 @@
       </form>
     </section>
 
-    <aside class="card">
-      <h2>Availability</h2>
-      <div id="availabilityList">
-        <div class="availability-day"><span>Jun 1 - Jun 3</span><span class="booked">Booked</span></div>
-        <div class="availability-day"><span>Jun 4 - Jun 10</span><span class="available">Available</span></div>
-        <div class="availability-day"><span>Jun 11 - Jun 14</span><span class="booked">Booked</span></div>
-        <div class="availability-day"><span>Jun 15 - Jun 30</span><span class="available">Available</span></div>
-      </div>
-    </aside>
-  </div>
+<aside class="card">
+  <h2>Availability</h2>
+
+  <label>Check In</label>
+  <input type="date" id="check-in">
+
+  <label>Check Out</label>
+  <input type="date" id="check-out">
+
+  <button id="checkAvailabilityBtn">
+    Check Availability
+  </button>
+
+  <div id="availabilityList"></div>
+</aside>
 
   <script>
 const state = {
@@ -233,6 +238,40 @@ async function apiGet(path) {
   const res = await fetch(BASE_URL + path);
   if (!res.ok) throw new Error(res.statusText);
   return res.json();
+}
+
+document
+  .getElementById("checkAvailabilityBtn")
+  .addEventListener("click", loadAvailability);
+
+async function loadAvailability() {
+
+  const checkin = document.getElementById("check-in").value;
+  const checkout = document.getElementById("check-out").value;
+
+  const response = await fetch(
+    `/api/availability?checkin=${checkin}&checkout=${checkout}`
+  );
+
+  const days = await response.json();
+
+  const container = document.getElementById("availabilityList");
+  container.innerHTML = "";
+
+  days.forEach(day => {
+
+    const row = document.createElement("div");
+    row.className = "availability-day";
+
+    row.innerHTML = `
+      <span>${day.date}</span>
+      <span class="${day.available ? "available" : "booked"}">
+        ${day.available ? "Available" : "Unavailable"}
+      </span>
+    `;
+
+    container.appendChild(row);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

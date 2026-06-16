@@ -1,0 +1,16 @@
+qa/tests/api/test_add_booking_api.py::test_add_booking_api
+qa/tests/api/test_api_calls.py::test_api_cottage
+qa/tests/api/test_booking_retrieval_schema.py::test_booking_schema
+qa/tests/ui/test_booking.py::test_single_booking
+qa/tests/ui/test_booking.py::test_multiple_bookings
+qa/tests/ui/test_image_gallery.py::test_image_gallery_loading
+qa/tests/ui/test_landing_page.py::test_landing_page
+qa/tests/whitebox/component/test_get_cottage_info.py::test_get_cottage_info
+qa/tests/whitebox/component_integration/test_add_reservation.py::test_add_reservation
+qa/tests/whitebox/unit/test_check_availability.py::test_check_availability
+qa/tests/whitebox/unit/test_check_availability.py::test_check_no_availability
+qa/tests/whitebox/unit/test_get_reserved_dates.py::test_get_reserved_dates
+qa/tests/whitebox/unit/test_payment_method.py::test_payment_by_cc
+qa/tests/whitebox/unit/test_payment_method.py::test_payment_by_paypal
+qa/tests/whitebox/unit/test_valid_email.py::test_valid_email
+qa/tests/whitebox/unit/test_valid_email.py::test_invalid_email

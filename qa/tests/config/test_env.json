@@ -1,0 +1,34 @@
+
+{
+  "environment": "test",
+
+  "api": {
+    "get_reservation_endpoint": "api/get_reservation_by_booking_id",
+    "add_reservation_endpoint": "api/add_reservation",
+    "get_cottage_endpoint": "api/cottage-info",
+    "check_availability_endpoint": "api/availability",
+    "timeout": 30
+  },
+
+  "ui": {
+    "base_url": "http://127.0.0.1:5002/"
+  },
+
+  "database": {
+    "reset_tables": ["booking", "cottage_info", "reservation_dates"]
+  },
+
+  "auth": {
+    "token": "your-api-token"
+  },
+
+  "browser": {
+    "type": "chromium",
+    "headless": true
+  },
+
+  "feature_flags": {
+    "enable_email_notifications": true
+  }
+}
+

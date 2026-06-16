@@ -1,6 +1,7 @@
 from dev.db.db_connect import DBConnect
 from dev.utils.generic_utils import check_availability, get_reservation_dates
-
+from datetime import timedelta
+from datetime import datetime
 
 class DBClient:
 
@@ -34,7 +35,7 @@ class DBClient:
         checkout = booking_details[3]
 
         available = check_availability(checkin, checkout, reservation_dates)
-        if len(available) == 0: # create booking as reservation dates don't conflict with existing dates
+        if len(available) == 0:  # create booking as reservation dates don't conflict with existing dates
             cursor = self.connection.cursor
             cursor.execute("""
                     SELECT setval(
@@ -83,3 +84,36 @@ class DBClient:
                           """, (booking_id,))  # <-- pass as tuple
         booking = cursor.fetchone()
         return booking
+
+    def get_availability(self, checkin, checkout):
+
+        cursor = self.connection.cursor
+        print(checkin, checkout)
+
+        cursor.execute("""
+            SELECT date
+            FROM reservation_dates
+            WHERE date::date >= %s
+            AND date::date < %s;
+        """, (checkin, checkout))
+
+        rows = cursor.fetchall()
+
+        booked_dates = {
+            datetime.strptime(row[0], "%Y-%m-%d").date()
+            for row in rows
+        }
+
+        availability = []
+
+        current = checkin
+
+        while current < checkout:
+            availability.append({
+                "date": current.isoformat(),
+                "available": current not in booked_dates
+            })
+
+            current += timedelta(days=1)
+
+        return availability
