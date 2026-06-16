@@ -13,6 +13,7 @@ import shutil
 
 
 
+
 from playwright.sync_api import sync_playwright
 from qa.business_logic.db_queries.db_queries import *
 from qa.core.config.environment import load_environment
@@ -49,8 +50,8 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture()
-def load_env_config():
-    environment = os.environ.get('ENV_NAME')
+def load_env_config(request):
+    environment = request.config.getoption("--env")
     with open(f'qa/tests/config/{environment}_env.json') as f:
         config = json.load(f)
     return config
