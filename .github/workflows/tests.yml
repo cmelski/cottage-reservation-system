@@ -28,6 +28,7 @@ jobs:
       DB_HOST: localhost
       DB_PORT: 5432
       DB_NAME: testdb
+      DB_NAME_METRICS: testdb
       DB_NAME_DEFAULT: postgres
       DB_USER: postgres
       DB_PASSWORD: postgres
@@ -54,6 +55,10 @@ jobs:
       - name: Create database schema
         run: |
           python -c "from dev.db.db_create import create_table; create_table()"
+
+      - name: Create metrics schema
+        run: |
+          python -c "from dev.db.db_metrics_client_create import create_table; create_table()"
 
       - name: Start Flask app
         run: |
