@@ -4,11 +4,12 @@ from qa.business_logic.api.reservation_api import BookingResponse, ReservationAP
 from qa.business_logic.db_queries.db_queries import add_booking_to_db
 
 @pytest.mark.smoke
+@pytest.mark.schema
 def test_booking_schema(reset_db, api_client, db_client, create_single_booking):
     # add a new booking directly through DB call
 
     new_booking = add_booking_to_db(create_single_booking, db_client)
-    booking_id = new_booking[1]
+    booking_id = new_booking[0]
 
     reservation_api = ReservationAPI(api_client)
 
